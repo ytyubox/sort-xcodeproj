@@ -1,6 +1,6 @@
 #!/bin/sh
 
-files=$(git ls-files | grep 'pbxproj')
-
-perl .ci/sort.pl $files;
-git add "$files";
+git diff --diff-filter=d --staged --name-only | grep -e 'pbxproj' | while read line; do
+  perl .githooks/xcsort.pl $line --no-warnings;
+  git add "$line";
+done
